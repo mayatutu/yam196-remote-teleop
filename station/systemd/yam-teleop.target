@@ -1,0 +1,5 @@
+[Unit]
+Description=SZ_YAM02 Teleop (explicit controller only)
+
+[Install]
+WantedBy=default.target

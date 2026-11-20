@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /home/ai/yam-teleop/current/.venv/bin/python /home/ai/yam-teleop/current/launch.py "$@"

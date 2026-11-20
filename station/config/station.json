@@ -1,0 +1,77 @@
+{
+  "robot_id": "SZ_YAM02",
+  "enabled": false,
+  "state_enabled": true,
+  "server_mapping": null,
+  "commissioning": {
+    "mate_mapping": false,
+    "home": false,
+    "cameras": false,
+    "public_network": false,
+    "device_release": false
+  },
+  "state_url": "http://47.119.112.49:5052",
+  "relay_host": "191.222.219.43",
+  "relay_arm_port": 5005,
+  "relay_video_port": 5004,
+  "server_host": "127.0.0.1",
+  "server_port": 5012,
+  "eval_units": [
+    "yam2-web.service",
+    "yam2-policy.service",
+    "yam2-gui.service"
+  ],
+  "eval_state_url": "http://127.0.0.1:8772/api/state",
+  "arms": {
+    "left": {
+      "channel": "can_left",
+      "gripper_limits": [
+        6.4242389562829025,
+        1.2201495384145868
+      ],
+      "calibration_offset": 0.0,
+      "home": null
+    },
+    "right": {
+      "channel": "can_right",
+      "gripper_limits": [
+        6.435301747158007,
+        1.2178606851300824
+      ],
+      "calibration_offset": 0.0,
+      "home": null
+    }
+  },
+  "cameras": {
+    "head": {
+      "model": "D435",
+      "serial": "263122074809",
+      "session": "cam_third_SZ_YAM02",
+      "width": 640,
+      "height": 480,
+      "capture_fps": 30,
+      "fps": 30,
+      "bitrate": 1000000
+    },
+    "left": {
+      "model": "D405",
+      "serial": "260322278322",
+      "session": "cam_wrist_l_SZ_YAM02",
+      "width": 424,
+      "height": 240,
+      "capture_fps": 30,
+      "fps": 30,
+      "bitrate": 300000
+    },
+    "right": {
+      "model": "D405",
+      "serial": "260422273031",
+      "session": "cam_wrist_r_SZ_YAM02",
+      "width": 424,
+      "height": 240,
+      "capture_fps": 30,
+      "fps": 30,
+      "bitrate": 300000
+    }
+  }
+}

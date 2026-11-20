@@ -1,0 +1,29 @@
+client_root: /home/ai/yam-teleop/runtime/arena-client
+left_config_path: /home/ai/yam-teleop/config/left.yaml
+remote_teleop:
+  enabled: true
+  low_latency_sdk: /home/ai/yam-teleop/current/piper-mate/Python_SDK
+  piper_mate_sdk: /home/ai/yam-teleop/current/piper-mate/Python_SDK
+  relay:
+    agent_control_session: arena_agent_ctrl_SZ_YAM02
+    arm_port: 5005
+    arm_session: yam_arm_SZ_YAM02
+    host: 191.222.219.43
+    video_port: 5004
+  robot:
+    left_can: can_left
+    right_can: can_right
+    yam_remote_server_bind_ip: 127.0.0.1
+    yam_remote_server_port: 5012
+    yam_server_config: /home/ai/yam-teleop/config/server.yaml
+  safety:
+    can_release_grace_sec: 2.0
+    require_can_handoff_preflight: true
+    require_home_after_teleop: true
+  state:
+    enabled: true
+    server: http://47.119.112.49:5052
+    token: "REDACTED_CONFIGURE_LOCALLY"
+    websocket: ws://47.119.112.49:5052
+right_config_path: /home/ai/yam-teleop/config/right.yaml
+robot_id: SZ_YAM02

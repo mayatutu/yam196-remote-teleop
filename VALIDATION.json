@@ -1,0 +1,8 @@
+{
+  "files": 242,
+  "source_snapshot_hashes_verified": 189,
+  "private_key_github_token_scan": "passed",
+  "deployed_tests": "62 passed, 1 Windows-only skip",
+  "real_device_operations": "none",
+  "note": "Original non-UTF8 upstream C comments retained byte-for-byte."
+}

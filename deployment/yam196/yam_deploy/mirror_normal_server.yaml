@@ -1,0 +1,61 @@
+bind_ip: "0.0.0.0"
+port: 5010
+left_can: "can_left"
+right_can: "can_right"
+
+# Soft hold last pose after 150ms; zero-torque only if the gap reaches 600ms.
+stale_hold_ms: 150
+hard_timeout_ms: 600
+timeout_ms: 600
+status_rate: 1.0
+
+allow_single_arm: true
+# After all-stop/jump/CAN fault, stay SAFE until a new authorized session.
+# watchdog hard timeout may rebaseline; staleHold recovers via 3-packet slew.
+# Do not auto-resume from a leftover UDP frame after an explicit stop.
+auto_resume: false
+dry_run: false
+run_preinit: false
+
+gripper_enabled: true
+gripper_type: "linear_4310"
+zero_gravity_mode: true
+
+baseline_samples: 3
+baseline_max_vel_deg_s: 5.0
+
+# absolute = GELLO-style park-then-follow; delta = relative from lock pose (fallback).
+mapping_mode: absolute
+
+# Axis polarity only (not zero). After leader set_zero, use offsets for bias;
+# keep signs that match physical direction (J3/J4 may need -1 on remounted Mate).
+left_joint_signs: "1,1,1,1,1,1"
+right_joint_signs: "1,1,1,1,1,1"
+left_joint_scales: "1,1,1,1,1,1"
+right_joint_scales: "1,1,1,1,1,1"
+
+# Software offsets: yam = leader * signs * scales + offsets (radians).
+# Protocol pairing: USB0↔can_left, USB1↔can_right.
+left_joint_offsets: "0,0,0,0,0,0"
+right_joint_offsets: "0,0,0,0,0,0"
+
+# ALIGNING: slow park toward frozen abs(leader).
+left_align_rate_limit_rad_s: "2,2,2,2,2,2"
+right_align_rate_limit_rad_s: "2,2,2,2,2,2"
+# NORMAL track (absolute + delta): UDP teleop safety cap (rad/s); J3 slightly tighter.
+left_joint_rate_limit_rad_s: "8,8,6,8,8,8"
+right_joint_rate_limit_rad_s: "8,8,6,8,8,8"
+
+align_tol_rad: 0.03
+align_timeout_s: 15.0
+
+# map mate gripper meters [0..0.08] -> normalized command [0..gripper_max]
+# gripper_max 0.75 leaves ~25% margin vs open hard-stop (avoids full-open chatter).
+left_gripper_scale: 12.5
+right_gripper_scale: 12.5
+left_gripper_offset: 0.0
+right_gripper_offset: 0.0
+left_gripper_min: 0.0
+left_gripper_max: 0.75
+right_gripper_min: 0.0
+right_gripper_max: 0.75

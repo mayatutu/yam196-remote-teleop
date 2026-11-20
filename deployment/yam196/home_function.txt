@@ -1,0 +1,40 @@
+def run_home_move(*, left_config_path, right_config_path=None, left_only=False, home_eps_rad=_HOME_EPS_RAD):
+    from yam_deploy.runtime import require_running
+    from yam_deploy.robot import close_many
+    require_running('home')
+    left_cfg = OmegaConf.to_container(OmegaConf.load(left_config_path), resolve=True)
+    right_cfg = (OmegaConf.to_container(OmegaConf.load(right_config_path), resolve=True)
+                 if right_config_path is not None and not left_only else None)
+    bimanual = right_cfg is not None
+    target = _target_joints(bimanual=bimanual, left_cfg=left_cfg, right_cfg=right_cfg)
+    if target is None or target.shape != (14 if bimanual else 7,) or not np.isfinite(target).all():
+        raise RuntimeError('A finite, validated Home target is required before opening hardware')
+    def terminate(_signum, _frame):
+        raise KeyboardInterrupt
+    signal.signal(signal.SIGTERM, terminate)
+    opened = []
+    result = 1
+    try:
+        opened.append(_build_robot_from_cfg(left_cfg))
+        if bimanual:
+            opened.append(_build_robot_from_cfg(right_cfg))
+        robot = BimanualRobot(*opened) if bimanual else opened[0]
+        env = RobotEnv(robot, control_rate_hz=100.0, camera_dict={})
+        curr = np.asarray(env.get_obs()['joint_positions'], dtype=float)
+        if curr.shape != target.shape or not np.isfinite(curr).all():
+            raise RuntimeError('Invalid Home feedback')
+        if np.max(np.abs(curr - target)) >= home_eps_rad:
+            move_to_start_position(env, bimanual=bimanual, left_cfg=left_cfg, right_cfg=right_cfg)
+        final = np.asarray(env.get_obs()['joint_positions'], dtype=float)
+        if final.shape != target.shape or not np.isfinite(final).all() or np.max(np.abs(final-target)) >= home_eps_rad:
+            raise RuntimeError('Home position not reached')
+        result = 0
+    except (Exception, KeyboardInterrupt) as exc:
+        print(f'home_move_failed: {exc}', file=sys.stderr)
+    finally:
+        try:
+            close_many(opened)
+        except Exception as exc:
+            print(f'home_move_close_failed: {exc}', file=sys.stderr)
+            result = 1
+    return result

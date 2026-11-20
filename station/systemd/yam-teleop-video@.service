@@ -1,0 +1,17 @@
+[Unit]
+Description=SZ_YAM02 Teleop video %i
+PartOf=yam-teleop.target
+[Service]
+Type=simple
+Restart=no
+KillMode=control-group
+TimeoutStopSec=30
+UMask=0077
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONPATH=/home/ai/yam-teleop/current/python:/home/ai/yam-teleop/current/arena-client/yam_client:/home/ai/yam-teleop/current/piper-mate/Python_SDK
+WorkingDirectory=/home/ai/yam-teleop/runtime/arena-client
+ExecStart=/home/ai/yam-teleop/current/.venv/bin/python /home/ai/yam-teleop/current/launch.py video %i
+
+[Install]
+WantedBy=yam-teleop.target
